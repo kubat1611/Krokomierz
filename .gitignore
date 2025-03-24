@@ -1,0 +1,43 @@
+# Node modules and dependencies
+node_modules/
+package-lock.json
+yarn.lock
+npm-debug.log*
+*.log
+
+# Expo and React Native build artifacts
+.expo/
+.expo-shared/
+dist/
+build/
+android/.gradle/
+android/app/build/
+android/build/
+ios/Pods/
+ios/build/
+ios/*.xcodeproj/project.xcworkspace/
+ios/*.xcodeproj/xcuserdata/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment files (API keys, secrets)
+.env
+.env.local
+.env.production
+.env.development
+
+# VS Code and IDE settings
+.vscode/
+.idea/
+*.iml
+
+# Metro bundler cache
+metro-cache/
+babel-cache/
+
+# Test coverage and temporary files
+coverage/
+*.pid
+*.seed
