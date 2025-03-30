@@ -19,7 +19,7 @@ type RingProgressProps = {
 const color = '#EE0F55';
 
 const RingProgress = ({
-  radius = 100,
+  radius = 125,
   strokeWidth = 35,
   progress,
 }: RingProgressProps) => {
@@ -27,7 +27,7 @@ const RingProgress = ({
   const circumference = 2 * Math.PI * innerRadius;
 
   const fill = useSharedValue(0);
-
+ 
   useEffect(() => {
     fill.value = withTiming(progress, { duration: 1500 });
   }, [progress]);
