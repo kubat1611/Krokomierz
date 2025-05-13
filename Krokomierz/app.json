@@ -1,6 +1,9 @@
 {
   "expo": {
-    "plugins": ["expo-health-connect"],
+    "plugins": [
+      "expo-health-connect",
+      "expo-font"
+    ],
     "name": "Krokomierz",
     "slug": "Krokomierz",
     "version": "1.0.0",
@@ -21,7 +24,11 @@
       }
     },
     "android": {
-      "permissions": ["android.permission.health.READ_STEPS", "android.permission.health.READ_DISTANCE", "android.permission.health.READ_FLOORS_CLIMBED"],
+      "permissions": [
+        "android.permission.health.READ_STEPS",
+        "android.permission.health.READ_DISTANCE",
+        "android.permission.health.READ_FLOORS_CLIMBED"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

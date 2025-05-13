@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { ReactNode } from 'react';
 
 type ValueProps = {
-  label: string;
+  label: ReactNode;
   value: string;
 };
 

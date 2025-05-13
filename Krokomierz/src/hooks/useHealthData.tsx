@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import { initialize, requestPermission, readRecords } from 'react-native-health-connect';
+// import { initialize, requestPermission, readRecords } from 'react-native-health-connect';
 
 interface UseHealthDataReturn {
   steps: number;
@@ -11,11 +11,16 @@ interface UseHealthDataReturn {
   retry: () => void;
 }
 
-interface TimeRangeFilter {
-  operator: "between";
-  startTime: string;
-  endTime: string;
-}
+const generateMockData = (date: Date) => {
+  const seed = date.getDate();
+  return {
+    steps: 3000 + (seed * 123) % 5000, // pseudo-random
+    distance: parseFloat(((seed * 73) % 7000 / 1000).toFixed(2)), // in km
+    flights: (seed * 3) % 20,
+  };
+};
+
+const isMockEnvironment = __DEV__ && Platform.OS === 'android';
 
 const useHealthData = (date: Date): UseHealthDataReturn => {
   const [steps, setSteps] = useState<number>(0);
@@ -31,6 +36,21 @@ const useHealthData = (date: Date): UseHealthDataReturn => {
   };
 
   useEffect(() => {
+    if (isMockEnvironment) {
+      // MOCK PATH
+      setIsLoading(true);
+      const mock = generateMockData(date);
+      setTimeout(() => {
+        setSteps(mock.steps);
+        setDistance(mock.distance);
+        setFlights(mock.flights);
+        setIsLoading(false);
+      }, 500); // simulate async delay
+      return;
+    }
+
+    // REAL PERMISSIONS PATH
+    /*
     const requestHealthPermissions = async () => {
       if (Platform.OS !== 'android') {
         setError('Health Connect is only available on Android');
@@ -46,18 +66,13 @@ const useHealthData = (date: Date): UseHealthDataReturn => {
           return;
         }
 
-        console.log("Requesting Health Connect permissions...");
-            const permissions = await requestPermission([
-            { accessType: 'read', recordType: 'Steps' },
-            { accessType: 'read', recordType: 'Distance' },
-            { accessType: 'read', recordType: 'FloorsClimbed' },
-            ]);
-        console.log("Permissions result:", permissions);
-
+        const permissions = await requestPermission([
+          { accessType: 'read', recordType: 'Steps' },
+          { accessType: 'read', recordType: 'Distance' },
+          { accessType: 'read', recordType: 'FloorsClimbed' },
+        ]);
 
         const granted = permissions.every(p => p.accessType === 'read');
-        
-        console.log("Permissions granted:", granted);
         if (!granted) {
           setError('Health permissions not granted');
           setIsLoading(false);
@@ -72,9 +87,14 @@ const useHealthData = (date: Date): UseHealthDataReturn => {
     };
 
     requestHealthPermissions();
+    */
   }, []);
 
   useEffect(() => {
+    if (isMockEnvironment) return;
+
+    // REAL DATA FETCHING PATH
+    /*
     if (!permissionsGranted) return;
 
     const readSampleData = async () => {
@@ -82,7 +102,7 @@ const useHealthData = (date: Date): UseHealthDataReturn => {
         setIsLoading(true);
         setError(null);
 
-        const timeRangeFilter: TimeRangeFilter = {
+        const timeRangeFilter = {
           operator: "between",
           startTime: new Date(date.setHours(0, 0, 0, 0)).toISOString(),
           endTime: new Date(date.setHours(23, 59, 59, 999)).toISOString(),
@@ -108,6 +128,7 @@ const useHealthData = (date: Date): UseHealthDataReturn => {
     };
 
     readSampleData();
+    */
   }, [date, retryCount, permissionsGranted]);
 
   return {
